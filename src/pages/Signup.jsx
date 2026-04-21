@@ -32,7 +32,7 @@ export default function Signup() {
             {/* Background glowing effects */}
             <div className="absolute bottom-0 right-1/2 translate-x-1/2 w-[800px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
 
-            <div className="w-full max-w-md p-8 sm:p-10 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-2xl backdrop-blur-md relative z-10 my-8">
+            <div className="w-full max-w-md p-6 sm:p-10 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-2xl backdrop-blur-md relative z-10 my-8">
                 <div className="flex items-center justify-center gap-3 mb-8">
                     <Logo className="w-10 h-10" />
                     <h1 className="text-2xl font-extrabold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-blue-400">Finwisea</h1>
