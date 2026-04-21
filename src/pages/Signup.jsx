@@ -40,7 +40,7 @@ export default function Signup() {
 
             if (data.status === "success") {
                 setLoading(false);
-                navigate('/login');
+                navigate('/dashboard');
             } else {
                 setError(data.message || "Registration failed. Please try again.");
                 setLoading(false);

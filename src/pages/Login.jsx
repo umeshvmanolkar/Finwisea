@@ -34,7 +34,7 @@ export default function Login() {
                 // Save user info and login
                 localStorage.setItem('finwisea_user', JSON.stringify(data.user));
                 setLoading(false);
-                navigate('/');
+                navigate('/dashboard');
             } else {
                 setError(data.message || "Invalid email or password");
                 setLoading(false);
