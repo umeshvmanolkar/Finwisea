@@ -1,21 +1,49 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { GOOGLE_SCRIPT_URL } from '../config';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         setLoading(true);
-        // Temporary mock for API login
-        setTimeout(() => {
+
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({
+                    action: "login",
+                    email: email,
+                    password: password
+                }),
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8",
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+                // Save user info and login
+                localStorage.setItem('finwisea_user', JSON.stringify(data.user));
+                setLoading(false);
+                navigate('/');
+            } else {
+                setError(data.message || "Invalid email or password");
+                setLoading(false);
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            setError("Network error. Could not connect to the server.");
             setLoading(false);
-            navigate('/');
-        }, 1000);
+        }
     };
 
     return (
@@ -29,6 +57,8 @@ export default function Login() {
                     <h1 className="text-3xl font-extrabold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-blue-400">Finwisea</h1>
                 </div>
                 <h2 className="text-2xl font-bold text-center text-slate-100 mb-8">Welcome Back</h2>
+
+                {error && <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm font-medium text-center">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>

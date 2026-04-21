@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { GOOGLE_SCRIPT_URL } from '../config';
 
 export default function Signup() {
     const [name, setName] = useState('');
@@ -20,11 +21,35 @@ export default function Signup() {
 
         setError('');
         setLoading(true);
-        // Temporary mock for API register
-        setTimeout(() => {
+
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({
+                    action: "signup",
+                    name: name,
+                    email: email,
+                    password: password
+                }),
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8",
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+                setLoading(false);
+                navigate('/login');
+            } else {
+                setError(data.message || "Registration failed. Please try again.");
+                setLoading(false);
+            }
+        } catch (err) {
+            console.error("Signup error:", err);
+            setError("Network error. Could not connect to the server.");
             setLoading(false);
-            navigate('/login');
-        }, 1000);
+        }
     };
 
     return (
